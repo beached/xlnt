@@ -186,8 +186,10 @@ target_include_directories(xlnt
 	PRIVATE
 	${XLNT_SOURCE_DIR}
 	${XLNT_SOURCE_DIR}/../third-party/libstudxml
-    ${XLNT_SOURCE_DIR}/../third-party/miniz
-	${XLNT_SOURCE_DIR}/../third-party/utfcpp)
+    ${XLNT_SOURCE_DIR}/../third-party/miniz)
+
+# Header-only; BUILD_INTERFACE keeps it out of the exported link interface
+target_link_libraries(xlnt PRIVATE $<BUILD_INTERFACE:daw::daw-utf-range>)
 
 # Platform- and file-specific settings, MSVC
 if(MSVC)
