@@ -132,7 +132,7 @@ struct XLNT_API constants
     /// <summary>
     /// Returns the namespace URI from a namespace name.
     /// </summary>
-    static const std::string &ns(const std::string &id);
+    XLNT_NO_DANGLING static const std::string &ns(const std::string &id);
 };
 
 } // namespace xlnt

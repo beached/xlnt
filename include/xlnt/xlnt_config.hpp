@@ -37,3 +37,16 @@
 #define XLNT_API
 #endif
 #endif
+
+// Marks a function returning a reference that is not tied to the lifetime of
+// its arguments, silencing GCC's -Wdangling-reference false positives
+#ifndef XLNT_NO_DANGLING
+#if defined(__has_cpp_attribute)
+#if __has_cpp_attribute(gnu::no_dangling)
+#define XLNT_NO_DANGLING [[gnu::no_dangling]]
+#endif
+#endif
+#ifndef XLNT_NO_DANGLING
+#define XLNT_NO_DANGLING
+#endif
+#endif
