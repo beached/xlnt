@@ -22,6 +22,7 @@
 // @author: see AUTHORS file
 #pragma once
 
+#ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wweak-vtables"
 #pragma clang diagnostic ignored "-Wextra-semi"
@@ -29,8 +30,11 @@
 #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
 #pragma clang diagnostic ignored "-Wsuggest-destructor-override"
 #pragma clang diagnostic ignored "-Wsuggest-override"
+#endif
 #include <libstudxml/content.hxx>
 #include <libstudxml/parser.hxx>
 #include <libstudxml/qname.hxx>
 #include <libstudxml/serializer.hxx>
+#ifdef __clang__
 #pragma clang diagnostic pop
+#endif

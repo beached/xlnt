@@ -46,7 +46,7 @@
         {                                                                     \
             expression;                                                       \
         }                                                                     \
-        catch (exception_type)                                                \
+        catch (const exception_type &)                                        \
         {                                                                     \
             break;                                                            \
         }                                                                     \

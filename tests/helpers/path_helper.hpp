@@ -26,7 +26,7 @@
 class path_helper
 {
 public:
-    static xlnt::path test_data_directory(const std::string &append = "")
+    static xlnt::path test_data_directory()
     {
         static const std::string data_dir = STRING_LITERAL(XLNT_TEST_DATA_DIR);
         return xlnt::path(data_dir);
@@ -37,7 +37,7 @@ public:
         return test_data_directory().append(xlnt::path(filename));
     }
 
-    static xlnt::path benchmark_data_directory(const std::string &append = "")
+    static xlnt::path benchmark_data_directory()
     {
         static const std::string data_dir = STRING_LITERAL(XLNT_BENCHMARK_DATA_DIR);
         return xlnt::path(data_dir);
@@ -48,7 +48,7 @@ public:
         return benchmark_data_directory().append(xlnt::path(filename));
     }
 
-    static xlnt::path sample_data_directory(const std::string &append = "")
+    static xlnt::path sample_data_directory()
     {
         static const std::string data_dir = STRING_LITERAL(XLNT_SAMPLE_DATA_DIR);
         return xlnt::path(data_dir);

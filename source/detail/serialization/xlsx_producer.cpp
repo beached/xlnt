@@ -683,6 +683,8 @@ void xlsx_producer::write_workbook(const relationship &rel)
         case relationship_type::vbaproject:
             write_binary(archive_path);
             continue;
+        default:
+            break;
         }
 
         // write xml

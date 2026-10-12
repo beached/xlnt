@@ -71,7 +71,7 @@ public:
         {
             xlnt_assert_throws_nothing(function_that_throws());
         }
-        catch (std::runtime_error)
+        catch (const std::runtime_error &)
         {
             // good
         }
@@ -99,7 +99,7 @@ public:
             xlnt_assert_throws(function_that_doesnt_throw(), std::runtime_error);
             throw xlnt::exception("test failed");
         }
-        catch (xlnt::exception)
+        catch (const xlnt::exception &)
         {
             // good
         }
@@ -115,7 +115,7 @@ public:
             xlnt_assert_throws(function_that_throws(), xlnt::exception);
             throw xlnt::exception("test failed");
         }
-        catch (xlnt::exception)
+        catch (const xlnt::exception &)
         {
             // good
         }
