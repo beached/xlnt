@@ -23,6 +23,7 @@
 
 #include <cassert>
 #include <cctype>
+#include <cstdint>
 #include <numeric> // for std::accumulate
 #include <sstream>
 #include <unordered_map>

@@ -23,6 +23,7 @@
 // @author: see AUTHORS file
 
 #include <cmath>
+#include <cstdint>
 #include <cstdlib>
 
 #include <xlnt/styles/color.hpp>

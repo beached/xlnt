@@ -23,6 +23,7 @@
 // @author: see AUTHORS file
 
 #include <cctype>
+#include <cstdint>
 
 #include <xlnt/cell/cell_reference.hpp>
 #include <xlnt/utils/exceptions.hpp>

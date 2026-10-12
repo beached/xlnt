@@ -23,6 +23,7 @@
 // @author: see AUTHORS file
 #pragma once
 
+#include <cstdint>
 #include <cstddef>
 #include <iterator>
 #include <string>

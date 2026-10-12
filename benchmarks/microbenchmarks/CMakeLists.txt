@@ -1,7 +1,7 @@
 # FetchContent added in cmake v3.11
 # https://cmake.org/cmake/help/v3.11/module/FetchContent.html
 # this file is behind a feature flag (XLNT_MICROBENCH_ENABLED) so the primary build is not affected
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 4.2.3)
 project(xlnt_ubench)
 
 # acquire google benchmark dependency

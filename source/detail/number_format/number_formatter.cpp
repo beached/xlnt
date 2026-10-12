@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cmath>
+#include <cstdint>
 
 #include <xlnt/utils/exceptions.hpp>
 #include <xlnt/utils/numeric.hpp>

@@ -22,6 +22,7 @@
 // @author: see AUTHORS file
 
 #include <cmath>
+#include <cstdint>
 #include <numeric> // for std::accumulate
 #include <string>
 #include <type_traits>

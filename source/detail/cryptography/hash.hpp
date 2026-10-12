@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 #include <detail/cryptography/sha.hpp>

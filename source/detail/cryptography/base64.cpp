@@ -22,6 +22,7 @@
 
 #include <detail/cryptography/base64.hpp>
 #include <array>
+#include <cstdint>
 
 namespace xlnt {
 namespace detail {

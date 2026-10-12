@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 4.2.3)
 project(xlnt.benchmarks)
 
 # Require C++11 compiler

@@ -21,6 +21,7 @@
 // @license: http://www.opensource.org/licenses/mit-license.php
 // @author: see AUTHORS file
 
+#include <cstdint>
 #include <iostream>
 
 #include <xlnt/cell/cell.hpp>

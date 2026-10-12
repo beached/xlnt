@@ -22,6 +22,7 @@
 // @author: see AUTHORS file
 
 #include <algorithm>
+#include <cstdint>
 #include <iostream>
 
 #include <xlnt/xlnt.hpp>

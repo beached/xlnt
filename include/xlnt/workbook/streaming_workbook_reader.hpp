@@ -23,6 +23,7 @@
 // @author: see AUTHORS file
 #pragma once
 
+#include <cstdint>
 #include <functional>
 #include <iostream>
 #include <memory>

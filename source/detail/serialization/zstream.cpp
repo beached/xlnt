@@ -36,6 +36,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 #include <algorithm>
 #include <array>
 #include <cassert>
+#include <cstdint>
 #include <cstring>
 #include <fstream>
 #include <iomanip>

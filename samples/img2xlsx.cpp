@@ -22,6 +22,7 @@
 // @author: see AUTHORS file
 
 #include <array>
+#include <cstdint>
 #include <iostream>
 #include <unordered_set>
 #include <vector>

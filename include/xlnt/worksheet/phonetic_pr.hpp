@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <xlnt/xlnt_config.hpp>
 #include <xlnt/utils/optional.hpp>
 #include <cstdint>

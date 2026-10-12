@@ -21,6 +21,7 @@
 // @license: http://www.opensource.org/licenses/mit-license.php
 // @author: see AUTHORS file
 
+#include <cstdint>
 #include <xlnt/utils/exceptions.hpp>
 #include <detail/serialization/vector_streambuf.hpp>
 
