@@ -137,3 +137,6 @@ _ReSharper*/
 _TeamCity*
 _UpgradeReport_Files/
 ~$*
+
+# Fetched by extern/CMakeLists.txt
+third-party/libstudxml/
