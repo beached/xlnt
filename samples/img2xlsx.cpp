@@ -40,7 +40,7 @@ namespace {
 // this effect are demonstrated: cell-level format and conditional formatting.
 
 // Clean up the code with some alias declarations
-using byte = std::uint8_t;
+using byte = unsigned char;
 using pixel = std::array<byte, 3>;
 using pixmap = std::vector<std::vector<pixel>>;
 

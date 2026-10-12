@@ -32,7 +32,7 @@ namespace {
 
 using xlnt::detail::encryption_info;
 
-std::vector<std::uint8_t> calculate_standard_key(
+std::vector<unsigned char> calculate_standard_key(
     encryption_info::standard_encryption_info info,
     const std::u16string &password)
 {
@@ -45,10 +45,10 @@ std::vector<std::uint8_t> calculate_standard_key(
     auto h_0 = hash(info.hash, salt_plus_password);
 
     // H_n = H(iterator + H_n-1)
-    std::vector<std::uint8_t> iterator_plus_h_n(4, 0);
+    std::vector<unsigned char> iterator_plus_h_n(4, 0);
     iterator_plus_h_n.insert(iterator_plus_h_n.end(), h_0.begin(), h_0.end());
     std::uint32_t &iterator = *reinterpret_cast<std::uint32_t *>(iterator_plus_h_n.data());
-    std::vector<std::uint8_t> h_n;
+    std::vector<unsigned char> h_n;
     for (iterator = 0; iterator < info.spin_count; ++iterator)
     {
         hash(info.hash, iterator_plus_h_n, h_n);
@@ -60,15 +60,15 @@ std::vector<std::uint8_t> calculate_standard_key(
     const std::uint32_t block_number = 0;
     h_n_plus_block.insert(
         h_n_plus_block.end(),
-        reinterpret_cast<const std::uint8_t *>(&block_number),
-        reinterpret_cast<const std::uint8_t *>(&block_number) + sizeof(std::uint32_t));
+        reinterpret_cast<const unsigned char *>(&block_number),
+        reinterpret_cast<const unsigned char *>(&block_number) + sizeof(std::uint32_t));
     auto h_final = hash(info.hash, h_n_plus_block);
 
     // X1 = H(h_final ^ 0x36)
-    std::vector<std::uint8_t> buffer(64, 0x36);
+    std::vector<unsigned char> buffer(64, 0x36);
     for (std::size_t i = 0; i < h_final.size(); ++i)
     {
-        buffer[i] = static_cast<std::uint8_t>(0x36 ^ h_final[i]);
+        buffer[i] = static_cast<unsigned char>(0x36 ^ h_final[i]);
     }
     auto X1 = hash(info.hash, buffer);
 
@@ -76,14 +76,14 @@ std::vector<std::uint8_t> calculate_standard_key(
     buffer.assign(64, 0x5c);
     for (std::size_t i = 0; i < h_final.size(); ++i)
     {
-        buffer[i] = static_cast<std::uint8_t>(0x5c ^ h_final[i]);
+        buffer[i] = static_cast<unsigned char>(0x5c ^ h_final[i]);
     }
     auto X2 = hash(info.hash, buffer);
 
     auto X3 = X1;
     X3.insert(X3.end(), X2.begin(), X2.end());
 
-    auto key = std::vector<std::uint8_t>(X3.begin(),
+    auto key = std::vector<unsigned char>(X3.begin(),
         X3.begin() + static_cast<std::ptrdiff_t>(info.key_bytes));
 
     using xlnt::detail::aes_ecb_decrypt;
@@ -102,7 +102,7 @@ std::vector<std::uint8_t> calculate_standard_key(
     return key;
 }
 
-std::vector<std::uint8_t> calculate_agile_key(
+std::vector<unsigned char> calculate_agile_key(
     encryption_info::agile_encryption_info info,
     const std::u16string &password)
 {
@@ -116,10 +116,10 @@ std::vector<std::uint8_t> calculate_agile_key(
     auto h_0 = hash(info.key_encryptor.hash, salt_plus_password);
 
     // H_n = H(iterator + H_n-1)
-    std::vector<std::uint8_t> iterator_plus_h_n(4, 0);
+    std::vector<unsigned char> iterator_plus_h_n(4, 0);
     iterator_plus_h_n.insert(iterator_plus_h_n.end(), h_0.begin(), h_0.end());
     std::uint32_t &iterator = *reinterpret_cast<std::uint32_t *>(iterator_plus_h_n.data());
-    std::vector<std::uint8_t> h_n;
+    std::vector<unsigned char> h_n;
     for (iterator = 0; iterator < info.key_encryptor.spin_count; ++iterator)
     {
         hash(info.key_encryptor.hash, iterator_plus_h_n, h_n);
@@ -129,9 +129,9 @@ std::vector<std::uint8_t> calculate_agile_key(
     static const std::size_t block_size = 8;
 
     auto calculate_block = [&info](
-                               const std::vector<std::uint8_t> &raw_key,
-                               const std::array<std::uint8_t, block_size> &block,
-                               const std::vector<std::uint8_t> &encrypted) {
+                               const std::vector<unsigned char> &raw_key,
+                               const std::array<unsigned char, block_size> &block,
+                               const std::vector<unsigned char> &encrypted) {
         auto combined = raw_key;
         combined.insert(combined.end(), block.begin(), block.end());
 
@@ -143,11 +143,11 @@ std::vector<std::uint8_t> calculate_agile_key(
         return aes_cbc_decrypt(encrypted, key, info.key_encryptor.salt_value);
     };
 
-    const std::array<std::uint8_t, block_size> input_block_key = {{0xfe, 0xa7, 0xd2, 0x76, 0x3b, 0x4b, 0x9e, 0x79}};
+    const std::array<unsigned char, block_size> input_block_key = {{0xfe, 0xa7, 0xd2, 0x76, 0x3b, 0x4b, 0x9e, 0x79}};
     auto hash_input = calculate_block(h_n, input_block_key, info.key_encryptor.verifier_hash_input);
     auto calculated_verifier = hash(info.key_encryptor.hash, hash_input);
 
-    const std::array<std::uint8_t, block_size> verifier_block_key = {
+    const std::array<unsigned char, block_size> verifier_block_key = {
         {0xd7, 0xaa, 0x0f, 0x6d, 0x30, 0x61, 0x34, 0x4e}};
     auto expected_verifier = calculate_block(h_n, verifier_block_key, info.key_encryptor.verifier_hash_value);
     expected_verifier.resize(calculated_verifier.size());
@@ -157,7 +157,7 @@ std::vector<std::uint8_t> calculate_agile_key(
         throw xlnt::exception("bad password");
     }
 
-    const std::array<std::uint8_t, block_size> key_value_block_key =
+    const std::array<unsigned char, block_size> key_value_block_key =
         {
             {0x14, 0x6e, 0x0b, 0xe7, 0xab, 0xac, 0xd0, 0xd6}};
 
@@ -169,7 +169,7 @@ std::vector<std::uint8_t> calculate_agile_key(
 namespace xlnt {
 namespace detail {
 
-std::vector<std::uint8_t> encryption_info::calculate_key() const
+std::vector<unsigned char> encryption_info::calculate_key() const
 {
     return is_agile
         ? calculate_agile_key(agile, password)

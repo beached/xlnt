@@ -27,7 +27,7 @@
 namespace xlnt {
 namespace detail {
 
-std::string encode_base64(const std::vector<std::uint8_t> &input)
+std::string encode_base64(const std::vector<unsigned char> &input)
 {
     auto encoded_length = (input.size() + 2 - ((input.size() + 2) % 3)) / 3 * 4;
     auto output = std::string(encoded_length, '\0');
@@ -35,8 +35,8 @@ std::string encode_base64(const std::vector<std::uint8_t> &input)
     auto output_iterator = output.begin();
     auto i = std::size_t(0);
     auto j = std::size_t(0);
-    std::array<std::uint8_t, 3> a3{{0}};
-    std::array<std::uint8_t, 4> a4{{0}};
+    std::array<unsigned char, 3> a3{{0}};
+    std::array<unsigned char, 4> a4{{0}};
 
     const std::string alphabet(
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -50,9 +50,9 @@ std::string encode_base64(const std::vector<std::uint8_t> &input)
         if (i == 3)
         {
             a4[0] = (a3[0] & 0xfc) >> 2;
-            a4[1] = static_cast<std::uint8_t>(((a3[0] & 0x03) << 4)
+            a4[1] = static_cast<unsigned char>(((a3[0] & 0x03) << 4)
                 + ((a3[1] & 0xf0) >> 4));
-            a4[2] = static_cast<std::uint8_t>(((a3[1] & 0x0f) << 2)
+            a4[2] = static_cast<unsigned char>(((a3[1] & 0x0f) << 2)
                 + ((a3[2] & 0xc0) >> 6));
             a4[3] = (a3[2] & 0x3f);
 
@@ -73,9 +73,9 @@ std::string encode_base64(const std::vector<std::uint8_t> &input)
         }
 
         a4[0] = (a3[0] & 0xfc) >> 2;
-        a4[1] = static_cast<std::uint8_t>(((a3[0] & 0x03) << 4)
+        a4[1] = static_cast<unsigned char>(((a3[0] & 0x03) << 4)
             + ((a3[1] & 0xf0) >> 4));
-        a4[2] = static_cast<std::uint8_t>(((a3[1] & 0x0f) << 2)
+        a4[2] = static_cast<unsigned char>(((a3[1] & 0x0f) << 2)
             + ((a3[2] & 0xc0) >> 6));
         a4[3] = (a3[2] & 0x3f);
 
@@ -93,7 +93,7 @@ std::string encode_base64(const std::vector<std::uint8_t> &input)
     return output;
 }
 
-std::vector<std::uint8_t> decode_base64(const std::string &input)
+std::vector<unsigned char> decode_base64(const std::string &input)
 {
     std::size_t padding_count = 0;
     auto in_end = std::next(input.data(), input.size());
@@ -104,15 +104,15 @@ std::vector<std::uint8_t> decode_base64(const std::string &input)
     }
 
     auto decoded_length = ((6 * input.size()) / 8) - padding_count;
-    auto output = std::vector<std::uint8_t>(decoded_length);
+    auto output = std::vector<unsigned char>(decoded_length);
     auto input_iterator = input.begin();
     auto output_iterator = output.begin();
     auto i = std::size_t(0);
     auto j = std::size_t(0);
-    std::array<std::uint8_t, 3> a3{{0}};
-    std::array<std::uint8_t, 4> a4{{0}};
+    std::array<unsigned char, 3> a3{{0}};
+    std::array<unsigned char, 4> a4{{0}};
 
-    auto b64_lookup = [](std::uint8_t c) -> std::uint8_t {
+    auto b64_lookup = [](unsigned char c) -> unsigned char {
         if (c >= 'A' && c <= 'Z') return c - 'A';
         if (c >= 'a' && c <= 'z') return c - 71;
         if (c >= '0' && c <= '9') return c + 4;
@@ -128,7 +128,7 @@ std::vector<std::uint8_t> decode_base64(const std::string &input)
             break;
         }
 
-        a4[i++] = static_cast<std::uint8_t>(*(input_iterator++));
+        a4[i++] = static_cast<unsigned char>(*(input_iterator++));
 
         if (i == 4)
         {
@@ -137,12 +137,12 @@ std::vector<std::uint8_t> decode_base64(const std::string &input)
                 a4[i] = b64_lookup(a4[i]);
             }
 
-            a3[0] = static_cast<std::uint8_t>(a4[0] << 2)
-                + static_cast<std::uint8_t>((a4[1] & 0x30) >> 4);
-            a3[1] = static_cast<std::uint8_t>((a4[1] & 0xf) << 4)
-                + static_cast<std::uint8_t>((a4[2] & 0x3c) >> 2);
-            a3[2] = static_cast<std::uint8_t>((a4[2] & 0x3) << 6)
-                + static_cast<std::uint8_t>(a4[3]);
+            a3[0] = static_cast<unsigned char>(a4[0] << 2)
+                + static_cast<unsigned char>((a4[1] & 0x30) >> 4);
+            a3[1] = static_cast<unsigned char>((a4[1] & 0xf) << 4)
+                + static_cast<unsigned char>((a4[2] & 0x3c) >> 2);
+            a3[2] = static_cast<unsigned char>((a4[2] & 0x3) << 6)
+                + static_cast<unsigned char>(a4[3]);
 
             for (i = 0; i < 3; i++)
             {
@@ -165,12 +165,12 @@ std::vector<std::uint8_t> decode_base64(const std::string &input)
             a4[j] = b64_lookup(a4[j]);
         }
 
-        a3[0] = static_cast<std::uint8_t>(a4[0] << 2)
-            + static_cast<std::uint8_t>((a4[1] & 0x30) >> 4);
-        a3[1] = static_cast<std::uint8_t>((a4[1] & 0xf) << 4)
-            + static_cast<std::uint8_t>((a4[2] & 0x3c) >> 2);
-        a3[2] = static_cast<std::uint8_t>((a4[2] & 0x3) << 6)
-            + static_cast<std::uint8_t>(a4[3]);
+        a3[0] = static_cast<unsigned char>(a4[0] << 2)
+            + static_cast<unsigned char>((a4[1] & 0x30) >> 4);
+        a3[1] = static_cast<unsigned char>((a4[1] & 0xf) << 4)
+            + static_cast<unsigned char>((a4[2] & 0x3c) >> 2);
+        a3[2] = static_cast<unsigned char>((a4[2] & 0x3) << 6)
+            + static_cast<unsigned char>(a4[3]);
 
         for (j = 0; j < i - 1; j++)
         {

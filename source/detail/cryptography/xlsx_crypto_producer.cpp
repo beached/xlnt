@@ -170,8 +170,8 @@ void write_agile_encryption_info(
 
 void write_standard_encryption_info(const encryption_info &info, std::ostream &info_stream)
 {
-    auto result = std::vector<std::uint8_t>();
-    auto writer = xlnt::detail::binary_writer<std::uint8_t>(result);
+    auto result = std::vector<unsigned char>();
+    auto writer = xlnt::detail::binary_writer<unsigned char>(result);
 
     const auto version_major = std::uint16_t(4);
     const auto version_minor = std::uint16_t(2);
@@ -210,7 +210,7 @@ void write_standard_encryption_info(const encryption_info &info, std::ostream &i
 
 void encrypt_xlsx_agile(
     const encryption_info &info,
-    const std::vector<std::uint8_t> &plaintext,
+    const std::vector<unsigned char> &plaintext,
     std::ostream &ciphertext_stream)
 {
     const auto length = static_cast<std::uint64_t>(plaintext.size());
@@ -223,7 +223,7 @@ void encrypt_xlsx_agile(
     salt_with_block_key.resize(salt_size + sizeof(std::uint32_t), 0);
     auto &segment_index = *reinterpret_cast<std::uint32_t *>(std::next(salt_with_block_key.data(), salt_size));
 
-    auto segment = std::vector<std::uint8_t>(4096, 0);
+    auto segment = std::vector<unsigned char>(4096, 0);
 
     for (auto i = std::size_t(0); i < length; i += 4096)
     {
@@ -243,14 +243,14 @@ void encrypt_xlsx_agile(
 
 void encrypt_xlsx_standard(
     const encryption_info &info,
-    const std::vector<std::uint8_t> &plaintext,
+    const std::vector<unsigned char> &plaintext,
     std::ostream &ciphertext_stream)
 {
     const auto length = static_cast<std::uint64_t>(plaintext.size());
     ciphertext_stream.write(reinterpret_cast<const char *>(&length), sizeof(std::uint64_t));
 
     auto key = info.calculate_key();
-    auto segment = std::vector<std::uint8_t>(4096, 0);
+    auto segment = std::vector<unsigned char>(4096, 0);
 
     for (auto i = std::size_t(0); i < length; ++i)
     {
@@ -263,14 +263,14 @@ void encrypt_xlsx_standard(
     }
 }
 
-std::vector<std::uint8_t> encrypt_xlsx(
-    const std::vector<std::uint8_t> &plaintext,
+std::vector<unsigned char> encrypt_xlsx(
+    const std::vector<unsigned char> &plaintext,
     const std::u16string &password)
 {
     auto encryption_info = generate_encryption_info(password);
     encryption_info.password = u"secret";
 
-    auto ciphertext = std::vector<std::uint8_t>();
+    auto ciphertext = std::vector<unsigned char>();
 
     xlnt::detail::vector_ostreambuf buffer(ciphertext);
     std::ostream stream(&buffer);
@@ -299,8 +299,8 @@ std::vector<std::uint8_t> encrypt_xlsx(
 namespace xlnt {
 namespace detail {
 
-std::vector<std::uint8_t> XLNT_API encrypt_xlsx(
-    const std::vector<std::uint8_t> &plaintext,
+std::vector<unsigned char> XLNT_API encrypt_xlsx(
+    const std::vector<unsigned char> &plaintext,
     const std::string &password)
 {
     return ::encrypt_xlsx(plaintext, utf8_to_utf16(password));
@@ -308,7 +308,7 @@ std::vector<std::uint8_t> XLNT_API encrypt_xlsx(
 
 void xlsx_producer::write(std::ostream &destination, const std::string &password)
 {
-    std::vector<std::uint8_t> plaintext;
+    std::vector<unsigned char> plaintext;
     vector_ostreambuf plaintext_buffer(plaintext);
     std::ostream decrypted_stream(&plaintext_buffer);
     write(decrypted_stream);

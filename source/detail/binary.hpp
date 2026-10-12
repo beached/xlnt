@@ -33,7 +33,7 @@
 namespace xlnt {
 namespace detail {
 
-using byte = std::uint8_t;
+using byte = unsigned char;
 
 template <typename T>
 class binary_reader

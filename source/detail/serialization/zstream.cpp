@@ -405,7 +405,7 @@ protected:
                 return -1;
             }
 
-            auto generated_output = static_cast<int>(strm.next_out - reinterpret_cast<std::uint8_t *>(out.data()));
+            auto generated_output = static_cast<int>(strm.next_out - reinterpret_cast<unsigned char *>(out.data()));
             ostream.write(out.data(), generated_output);
             if (header) header->compressed_size += static_cast<std::uint32_t>(generated_output);
             if (ret == Z_STREAM_END) break;
@@ -520,7 +520,7 @@ bool izstream::read_central_header()
     }
 
     source_stream_.seekg(end_position - read_start);
-    std::vector<std::uint8_t> buf(static_cast<std::size_t>(read_start), '\0');
+    std::vector<unsigned char> buf(static_cast<std::size_t>(read_start), '\0');
 
     if (read_start <= 0)
     {

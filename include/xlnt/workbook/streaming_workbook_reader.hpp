@@ -91,7 +91,7 @@ public:
     /// Interprets byte vector data as an XLSX file and sets the content of this
     /// workbook to match that file.
     /// </summary>
-    void open(const std::vector<std::uint8_t> &data);
+    void open(const std::vector<unsigned char> &data);
 
     /// <summary>
     /// Interprets file with the given filename as an XLSX file and sets

@@ -65,7 +65,7 @@ struct XLNT_API zheader
     std::uint32_t uncompressed_size = 0;
     std::string filename;
     std::string comment;
-    std::vector<std::uint8_t> extra;
+    std::vector<unsigned char> extra;
     std::uint32_t header_offset = 0;
 };
 

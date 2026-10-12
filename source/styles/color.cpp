@@ -31,14 +31,14 @@
 
 namespace {
 
-std::array<std::uint8_t, 4> decode_hex_string(const std::string &hex_string)
+std::array<unsigned char, 4> decode_hex_string(const std::string &hex_string)
 {
     auto x = xlnt::detail::parse_integer<unsigned long>(hex_string, 16);
 
-    auto a = static_cast<std::uint8_t>(x >> 24);
-    auto r = static_cast<std::uint8_t>((x >> 16) & 0xff);
-    auto g = static_cast<std::uint8_t>((x >> 8) & 0xff);
-    auto b = static_cast<std::uint8_t>(x & 0xff);
+    auto a = static_cast<unsigned char>(x >> 24);
+    auto r = static_cast<unsigned char>((x >> 16) & 0xff);
+    auto g = static_cast<unsigned char>((x >> 8) & 0xff);
+    auto b = static_cast<unsigned char>(x & 0xff);
 
     return {{r, g, b, a}};
 }
@@ -106,37 +106,37 @@ rgb_color::rgb_color(const std::string &hex_string)
 {
 }
 
-rgb_color::rgb_color(std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a)
+rgb_color::rgb_color(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
     : rgba_({{r, g, b, a}})
 {
 }
 
-std::uint8_t rgb_color::red() const
+unsigned char rgb_color::red() const
 {
     return rgba_[0];
 }
 
-std::uint8_t rgb_color::green() const
+unsigned char rgb_color::green() const
 {
     return rgba_[1];
 }
 
-std::uint8_t rgb_color::blue() const
+unsigned char rgb_color::blue() const
 {
     return rgba_[2];
 }
 
-std::uint8_t rgb_color::alpha() const
+unsigned char rgb_color::alpha() const
 {
     return rgba_[3];
 }
 
-std::array<std::uint8_t, 3> rgb_color::rgb() const
+std::array<unsigned char, 3> rgb_color::rgb() const
 {
     return {{red(), green(), blue()}};
 }
 
-std::array<std::uint8_t, 4> rgb_color::rgba() const
+std::array<unsigned char, 4> rgb_color::rgba() const
 {
     return rgba_;
 }

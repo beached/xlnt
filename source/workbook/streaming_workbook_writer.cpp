@@ -66,7 +66,7 @@ worksheet streaming_workbook_writer::add_worksheet(const std::string &title)
     return producer_->add_worksheet(title);
 }
 
-void streaming_workbook_writer::open(std::vector<std::uint8_t> &data)
+void streaming_workbook_writer::open(std::vector<unsigned char> &data)
 {
     stream_buffer_.reset(new detail::vector_ostreambuf(data));
     stream_.reset(new std::ostream(stream_buffer_.get()));

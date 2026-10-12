@@ -383,7 +383,7 @@ private:
             document_.write_sat();
         }
 
-        auto value = static_cast<std::uint8_t>(c);
+        auto value = static_cast<unsigned char>(c);
 
         if (c != traits_type::eof())
         {

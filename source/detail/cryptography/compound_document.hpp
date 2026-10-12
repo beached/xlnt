@@ -50,16 +50,16 @@ struct compound_document_header
     };
 
     std::uint64_t file_id = 0xE11AB1A1E011CFD0;
-    std::array<std::uint8_t, 16> ignore1 = { { 0 } };
+    std::array<unsigned char, 16> ignore1 = { { 0 } };
     std::uint16_t revision = 0x003E;
     std::uint16_t version = 0x0003;
     byte_order_type byte_order = byte_order_type::little_endian;
     std::uint16_t sector_size_power = 9;
     std::uint16_t short_sector_size_power = 6;
-    std::array<std::uint8_t, 10> ignore2 = { { 0 } };
+    std::array<unsigned char, 10> ignore2 = { { 0 } };
     std::uint32_t num_msat_sectors = 0;
     sector_id directory_start = -1;
-    std::array<std::uint8_t, 4> ignore3 = { { 0 } };
+    std::array<unsigned char, 4> ignore3 = { { 0 } };
     std::uint32_t threshold = 4096;
     sector_id ssat_start = -2;
     std::uint32_t num_short_sectors = 0;
@@ -85,7 +85,7 @@ struct compound_document_entry
             name_array.begin() + (name_length - 1) / 2));
     }
 
-    enum class entry_type : std::uint8_t
+    enum class entry_type : unsigned char
     {
         Empty = 0,
         UserStorage = 1,
@@ -95,7 +95,7 @@ struct compound_document_entry
         RootStorage = 5
     };
 
-    enum class entry_color : std::uint8_t
+    enum class entry_color : unsigned char
     {
         Red = 0,
         Black = 1
@@ -108,7 +108,7 @@ struct compound_document_entry
     directory_id prev = -1;
     directory_id next = -1;
     directory_id child = -1;
-    std::array<std::uint8_t, 36> ignore;
+    std::array<unsigned char, 36> ignore;
     sector_id start = -2;
     std::uint32_t size = 0;
     std::uint32_t ignore2;

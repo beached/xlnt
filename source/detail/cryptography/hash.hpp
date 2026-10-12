@@ -46,8 +46,8 @@ enum class hash_algorithm
     whirlpool
 };
 
-void hash(hash_algorithm algorithm, const std::vector<std::uint8_t> &input, std::vector<std::uint8_t> &output);
-std::vector<std::uint8_t> hash(hash_algorithm algorithm, const std::vector<std::uint8_t> &input);
+void hash(hash_algorithm algorithm, const std::vector<unsigned char> &input, std::vector<unsigned char> &output);
+std::vector<unsigned char> hash(hash_algorithm algorithm, const std::vector<unsigned char> &input);
 
 }; // namespace detail
 }; // namespace xlnt

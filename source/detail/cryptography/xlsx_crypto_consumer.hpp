@@ -30,7 +30,7 @@
 namespace xlnt {
 namespace detail {
 
-std::vector<std::uint8_t> XLNT_API decrypt_xlsx(const std::vector<std::uint8_t> &bytes, const std::string &password);
+std::vector<unsigned char> XLNT_API decrypt_xlsx(const std::vector<unsigned char> &bytes, const std::string &password);
 
 } // namespace detail
 } // namespace xlnt

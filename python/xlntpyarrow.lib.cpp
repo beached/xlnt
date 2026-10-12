@@ -201,12 +201,12 @@ void append_cell_value(arrow::ArrayBuilder *builder, arrow::Type::type type, xln
 
     case arrow::Type::UINT8:
         status = static_cast<arrow::UInt8Builder *>(builder)
-            ->Append(cell_value<std::uint8_t>(cell));
+            ->Append(cell_value<unsigned char>(cell));
         break;
 
     case arrow::Type::INT8:
         status = static_cast<arrow::Int8Builder *>(builder)
-          ->Append(cell_value<std::uint8_t>(cell));
+          ->Append(cell_value<unsigned char>(cell));
         break;
 
     case arrow::Type::UINT16:

@@ -47,9 +47,9 @@ struct encryption_info
         cipher_algorithm cipher;
         cipher_chaining chaining;
         hash_algorithm hash = hash_algorithm::sha1;
-        std::vector<std::uint8_t> salt;
-        std::vector<std::uint8_t> encrypted_verifier;
-        std::vector<std::uint8_t> encrypted_verifier_hash;
+        std::vector<unsigned char> salt;
+        std::vector<unsigned char> encrypted_verifier;
+        std::vector<unsigned char> encrypted_verifier_hash;
     } standard;
 
     struct agile_encryption_info
@@ -64,13 +64,13 @@ struct encryption_info
             std::string cipher_algorithm;
             std::string cipher_chaining;
             std::string hash_algorithm;
-            std::vector<std::uint8_t> salt_value;
+            std::vector<unsigned char> salt_value;
         } key_data;
 
         struct
         {
-            std::vector<std::uint8_t> hmac_key;
-            std::vector<std::uint8_t> hmac_value;
+            std::vector<unsigned char> hmac_key;
+            std::vector<unsigned char> hmac_value;
         } data_integrity;
 
         struct
@@ -83,14 +83,14 @@ struct encryption_info
             std::string cipher_algorithm;
             std::string cipher_chaining;
             hash_algorithm hash;
-            std::vector<std::uint8_t> salt_value;
-            std::vector<std::uint8_t> verifier_hash_input;
-            std::vector<std::uint8_t> verifier_hash_value;
-            std::vector<std::uint8_t> encrypted_key_value;
+            std::vector<unsigned char> salt_value;
+            std::vector<unsigned char> verifier_hash_input;
+            std::vector<unsigned char> verifier_hash_value;
+            std::vector<unsigned char> encrypted_key_value;
         } key_encryptor;
     } agile;
 
-    std::vector<std::uint8_t> calculate_key() const;
+    std::vector<unsigned char> calculate_key() const;
 };
 
 } // namespace detail

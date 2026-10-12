@@ -1011,7 +1011,7 @@ number_format_token number_format_parser::parse_next_token()
     number_format_token token;
 
     auto to_lower = [](char c) {
-        return static_cast<char>(std::tolower(static_cast<std::uint8_t>(c)));
+        return static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
     };
 
     if (format_string_.size() <= position_)

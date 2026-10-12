@@ -250,7 +250,7 @@ std::string content_type(xlnt::relationship_type type)
     case relationship_type::volatile_dependencies:
         return "application/vnd.openxmlformats-officedocument.spreadsheetml.volatileDependencies+xml";
     case relationship_type::vbaproject:
-        return "application/vnd.ms-office.vbaProject";        
+        return "application/vnd.ms-office.vbaProject";
     case relationship_type::worksheet:
         return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml";
     }
@@ -468,7 +468,7 @@ workbook workbook::empty()
     wb.d_->stylesheet_.get().borders.push_back(default_border);
 
     auto default_fill = fill(pattern_fill()
-                                 .type(pattern_fill_type::none));
+            .type(pattern_fill_type::none));
     stylesheet.fills.push_back(default_fill);
     auto gray125_fill = pattern_fill()
                             .type(pattern_fill_type::gray125);
@@ -908,7 +908,7 @@ void workbook::load(std::istream &stream)
     }
 }
 
-void workbook::load(const std::vector<std::uint8_t> &data)
+void workbook::load(const std::vector<unsigned char> &data)
 {
     if (data.size() < 22) // the shortest ZIP file is 22 bytes
     {
@@ -956,7 +956,7 @@ void workbook::load(const path &filename, const std::string &password)
     return load(file_stream, password);
 }
 
-void workbook::load(const std::vector<std::uint8_t> &data, const std::string &password)
+void workbook::load(const std::vector<unsigned char> &data, const std::string &password)
 {
     if (data.size() < 22) // the shortest ZIP file is 22 bytes
     {
@@ -975,14 +975,14 @@ void workbook::load(std::istream &stream, const std::string &password)
     consumer.read(stream, password);
 }
 
-void workbook::save(std::vector<std::uint8_t> &data) const
+void workbook::save(std::vector<unsigned char> &data) const
 {
     xlnt::detail::vector_ostreambuf data_buffer(data);
     std::ostream data_stream(&data_buffer);
     save(data_stream);
 }
 
-void workbook::save(std::vector<std::uint8_t> &data, const std::string &password) const
+void workbook::save(std::vector<unsigned char> &data, const std::string &password) const
 {
     xlnt::detail::vector_ostreambuf data_buffer(data);
     std::ostream data_stream(&data_buffer);
@@ -1188,11 +1188,6 @@ void workbook::clear()
 bool workbook::operator==(const workbook &rhs) const
 {
     return *d_ == *rhs.d_;
-}
-
-bool workbook::operator!=(const workbook &rhs) const
-{
-    return !operator==(rhs);
 }
 
 void workbook::swap(workbook &right)
@@ -1424,7 +1419,7 @@ bool workbook::contains(const std::string &sheet_title) const
     return false;
 }
 
-void workbook::thumbnail(const std::vector<std::uint8_t> &thumbnail,
+void workbook::thumbnail(const std::vector<unsigned char> &thumbnail,
     const std::string &extension, const std::string &content_type)
 {
     if (!d_->manifest_.has_relationship(path("/"), relationship_type::thumbnail))
@@ -1438,13 +1433,13 @@ void workbook::thumbnail(const std::vector<std::uint8_t> &thumbnail,
     d_->images_[thumbnail_rel.target().to_string()] = thumbnail;
 }
 
-const std::vector<std::uint8_t> &workbook::thumbnail() const
+const std::vector<unsigned char> &workbook::thumbnail() const
 {
     auto thumbnail_rel = d_->manifest_.relationship(path("/"), relationship_type::thumbnail);
     return d_->images_.at(thumbnail_rel.target().to_string());
 }
 
-const std::unordered_map<std::string, std::vector<std::uint8_t>> &workbook::binaries() const
+const std::unordered_map<std::string, std::vector<unsigned char>> &workbook::binaries() const
 {
     return d_->binaries_;
 }

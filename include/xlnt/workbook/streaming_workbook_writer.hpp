@@ -78,7 +78,7 @@ public:
     /// Serializes the workbook into an XLSX file and saves the bytes into
     /// byte vector data.
     /// </summary>
-    void open(std::vector<std::uint8_t> &data);
+    void open(std::vector<unsigned char> &data);
 
     /// <summary>
     /// Serializes the workbook into an XLSX file and saves the data into a file

@@ -41,7 +41,7 @@ class XLNT_API vector_istreambuf : public std::streambuf
     using int_type = std::streambuf::int_type;
 
 public:
-    explicit vector_istreambuf(const std::vector<std::uint8_t> &data);
+    explicit vector_istreambuf(const std::vector<unsigned char> &data);
 
     vector_istreambuf(const vector_istreambuf &) = delete;
     vector_istreambuf &operator=(const vector_istreambuf &) = delete;
@@ -58,7 +58,7 @@ private:
     std::streampos seekpos(std::streampos sp, std::ios_base::openmode) override;
 
 private:
-    const std::vector<std::uint8_t> &data_;
+    const std::vector<unsigned char> &data_;
     std::size_t position_;
 };
 
@@ -70,7 +70,7 @@ class XLNT_API vector_ostreambuf : public std::streambuf
     using int_type = std::streambuf::int_type;
 
 public:
-    explicit vector_ostreambuf(std::vector<std::uint8_t> &data);
+    explicit vector_ostreambuf(std::vector<unsigned char> &data);
 
     vector_ostreambuf(const vector_ostreambuf &) = delete;
     vector_ostreambuf &operator=(const vector_ostreambuf &) = delete;
@@ -85,26 +85,26 @@ private:
     std::streampos seekpos(std::streampos sp, std::ios_base::openmode) override;
 
 private:
-    std::vector<std::uint8_t> &data_;
+    std::vector<unsigned char> &data_;
     std::size_t position_;
 };
 
-//TODO: detail headers shouldn't be exporting such functions
+// TODO: detail headers shouldn't be exporting such functions
 
 /// <summary>
 /// Helper function to read all data from in_stream and store them in a vector.
 /// </summary>
-XLNT_API std::vector<std::uint8_t> to_vector(std::istream &in_stream);
+XLNT_API std::vector<unsigned char> to_vector(std::istream &in_stream);
 
 /// <summary>
 /// Helper function to write all data from bytes into out_stream.
 /// </summary>
-XLNT_API void to_stream(const std::vector<std::uint8_t> &bytes, std::ostream &out_stream);
+XLNT_API void to_stream(const std::vector<unsigned char> &bytes, std::ostream &out_stream);
 
 /// <summary>
 /// Shortcut function to stream a vector of bytes into a std::ostream.
 /// </summary>
-XLNT_API std::ostream &operator<<(std::ostream &out_stream, const std::vector<std::uint8_t> &bytes);
+XLNT_API std::ostream &operator<<(std::ostream &out_stream, const std::vector<unsigned char> &bytes);
 
 } // namespace detail
 } // namespace xlnt

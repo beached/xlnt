@@ -82,7 +82,7 @@ void byteswap(std::uint64_t *arr, std::size_t len)
 namespace xlnt {
 namespace detail {
 
-void sha1(const std::vector<std::uint8_t> &input, std::vector<std::uint8_t> &output)
+void sha1(const std::vector<unsigned char> &input, std::vector<unsigned char> &output)
 {
     static const auto sha1_bytes = 20;
 
@@ -94,7 +94,7 @@ void sha1(const std::vector<std::uint8_t> &input, std::vector<std::uint8_t> &out
     byteswap(output_pointer_u32, sha1_bytes / sizeof(std::uint32_t));
 }
 
-void sha512(const std::vector<std::uint8_t> &input, std::vector<std::uint8_t> &output)
+void sha512(const std::vector<unsigned char> &input, std::vector<unsigned char> &output)
 {
     static const auto sha512_bytes = 64;
 

@@ -45,7 +45,7 @@ using xlnt::detail::byte;
 using xlnt::detail::encryption_info;
 using xlnt::detail::read;
 
-std::vector<std::uint8_t> decrypt_xlsx_standard(
+std::vector<unsigned char> decrypt_xlsx_standard(
     encryption_info info,
     std::istream &encrypted_package_stream)
 {
@@ -53,8 +53,8 @@ std::vector<std::uint8_t> decrypt_xlsx_standard(
 
     auto decrypted_size = read<std::uint64_t>(encrypted_package_stream);
 
-    std::vector<std::uint8_t> encrypted_segment(4096, 0);
-    std::vector<std::uint8_t> decrypted_package;
+    std::vector<unsigned char> encrypted_segment(4096, 0);
+    std::vector<unsigned char> decrypted_package;
 
     while (encrypted_package_stream)
     {
@@ -74,7 +74,7 @@ std::vector<std::uint8_t> decrypt_xlsx_standard(
     return decrypted_package;
 }
 
-std::vector<std::uint8_t> decrypt_xlsx_agile(
+std::vector<unsigned char> decrypt_xlsx_agile(
     const encryption_info &info,
     std::istream &encrypted_package_stream)
 {
@@ -87,8 +87,8 @@ std::vector<std::uint8_t> decrypt_xlsx_agile(
     auto &segment = *reinterpret_cast<std::uint32_t *>(std::next(salt_with_block_key.data(), salt_size));
     auto total_size = read<std::uint64_t>(encrypted_package_stream);
 
-    std::vector<std::uint8_t> encrypted_segment(4096, 0);
-    std::vector<std::uint8_t> decrypted_package;
+    std::vector<unsigned char> encrypted_segment(4096, 0);
+    std::vector<unsigned char> decrypted_package;
 
     while (encrypted_package_stream)
     {
@@ -306,8 +306,8 @@ encryption_info read_encryption_info(std::istream &info_stream, const std::u16st
     return info;
 }
 
-std::vector<std::uint8_t> decrypt_xlsx(
-    const std::vector<std::uint8_t> &bytes,
+std::vector<unsigned char> decrypt_xlsx(
+    const std::vector<unsigned char> &bytes,
     const std::u16string &password)
 {
     if (bytes.empty())
@@ -334,14 +334,14 @@ std::vector<std::uint8_t> decrypt_xlsx(
 namespace xlnt {
 namespace detail {
 
-std::vector<std::uint8_t> XLNT_API decrypt_xlsx(const std::vector<std::uint8_t> &data, const std::string &password)
+std::vector<unsigned char> XLNT_API decrypt_xlsx(const std::vector<unsigned char> &data, const std::string &password)
 {
     return ::decrypt_xlsx(data, utf8_to_utf16(password));
 }
 
 void xlsx_consumer::read(std::istream &source, const std::string &password)
 {
-    std::vector<std::uint8_t> data((std::istreambuf_iterator<char>(source)), (std::istreambuf_iterator<char>()));
+    std::vector<unsigned char> data((std::istreambuf_iterator<char>(source)), (std::istreambuf_iterator<char>()));
     const auto decrypted = decrypt_xlsx(data, password);
     vector_istreambuf decrypted_buffer(decrypted);
     std::istream decrypted_stream(&decrypted_buffer);

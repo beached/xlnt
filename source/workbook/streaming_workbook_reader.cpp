@@ -117,7 +117,7 @@ worksheet streaming_workbook_reader::end_worksheet()
     return consumer_->read_worksheet_end(worksheet_rel_id_);
 }
 
-void streaming_workbook_reader::open(const std::vector<std::uint8_t> &data)
+void streaming_workbook_reader::open(const std::vector<unsigned char> &data)
 {
     stream_buffer_.reset(new detail::vector_istreambuf(data));
     stream_.reset(new std::istream(stream_buffer_.get()));

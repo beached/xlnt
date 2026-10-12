@@ -101,7 +101,7 @@ public:
 
     bool workbook_matches_file(xlnt::workbook &wb, const xlnt::path &file)
     {
-        std::vector<std::uint8_t> wb_data;
+        std::vector<unsigned char> wb_data;
         wb.save(wb_data);
         wb.save("temp.xlsx");
 
@@ -178,7 +178,7 @@ public:
 
         ws.freeze_panes("B2");
 
-        std::vector<std::uint8_t> temp_buffer;
+        std::vector<unsigned char> temp_buffer;
         wb.save(temp_buffer);
         xlnt_assert(!temp_buffer.empty());
     }
@@ -196,7 +196,7 @@ public:
         workbook.remove_sheet(workbook.sheet_by_title("XXX1"));
         xlnt_assert_equals(workbook.sheet_titles().size(), 1);
 
-        std::vector<std::uint8_t> temp_buffer;
+        std::vector<unsigned char> temp_buffer;
         xlnt_assert_throws_nothing(workbook.save(temp_buffer));
         xlnt_assert(!temp_buffer.empty());
     }
@@ -580,7 +580,7 @@ public:
         xlnt::workbook source_workbook;
         source_workbook.load(source);
 
-        std::vector<std::uint8_t> destination;
+        std::vector<unsigned char> destination;
         source_workbook.save(destination);
         source_workbook.save("temp" + source.filename());
 
@@ -605,7 +605,7 @@ public:
         xlnt::workbook source_workbook;
         source_workbook.load(source_data, password);
 
-        std::vector<std::uint8_t> destination_data;
+        std::vector<unsigned char> destination_data;
         //source_workbook.save(destination_data, password);
         source_workbook.save("encrypted.xlsx", password);
 

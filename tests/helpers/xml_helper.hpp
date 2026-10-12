@@ -271,8 +271,8 @@ public:
         return true;
     }
 
-    static bool xlsx_archives_match(const std::vector<std::uint8_t> &left,
-        const std::vector<std::uint8_t> &right)
+    static bool xlsx_archives_match(const std::vector<unsigned char> &left,
+        const std::vector<unsigned char> &right)
     {
         xlnt::detail::vector_istreambuf left_buffer(left);
         std::istream left_stream(&left_buffer);

@@ -21,14 +21,14 @@
 // @license: http://www.opensource.org/licenses/mit-license.php
 // @author: see AUTHORS file
 
-#include <cstdint>
 #include <xlnt/utils/exceptions.hpp>
 #include <detail/serialization/vector_streambuf.hpp>
+#include <cstdint>
 
 namespace xlnt {
 namespace detail {
 
-vector_istreambuf::vector_istreambuf(const std::vector<std::uint8_t> &data)
+vector_istreambuf::vector_istreambuf(const std::vector<unsigned char> &data)
     : data_(data),
       position_(0)
 {
@@ -121,7 +121,7 @@ std::streampos vector_istreambuf::seekpos(std::streampos sp, std::ios_base::open
     return static_cast<std::ptrdiff_t>(position_);
 }
 
-vector_ostreambuf::vector_ostreambuf(std::vector<std::uint8_t> &data)
+vector_ostreambuf::vector_ostreambuf(std::vector<unsigned char> &data)
     : data_(data),
       position_(0)
 {
@@ -131,7 +131,7 @@ vector_ostreambuf::int_type vector_ostreambuf::overflow(int_type c)
 {
     if (c != traits_type::eof())
     {
-        data_.push_back(static_cast<std::uint8_t>(c));
+        data_.push_back(static_cast<unsigned char>(c));
         position_ = data_.size() - 1;
     }
 
@@ -214,19 +214,19 @@ std::streampos vector_ostreambuf::seekpos(std::streampos sp, std::ios_base::open
     return static_cast<std::ptrdiff_t>(position_);
 }
 
-XLNT_API std::vector<std::uint8_t> to_vector(std::istream &in_stream)
+XLNT_API std::vector<unsigned char> to_vector(std::istream &in_stream)
 {
     if (!in_stream)
     {
         throw xlnt::exception("bad stream");
     }
 
-    return std::vector<std::uint8_t>(
+    return std::vector<unsigned char>(
         std::istreambuf_iterator<char>(in_stream),
         std::istreambuf_iterator<char>());
 }
 
-XLNT_API void to_stream(const std::vector<std::uint8_t> &bytes, std::ostream &out_stream)
+XLNT_API void to_stream(const std::vector<unsigned char> &bytes, std::ostream &out_stream)
 {
     if (!out_stream)
     {
@@ -236,7 +236,7 @@ XLNT_API void to_stream(const std::vector<std::uint8_t> &bytes, std::ostream &ou
     out_stream.write(reinterpret_cast<const char *>(bytes.data()), static_cast<std::ptrdiff_t>(bytes.size()));
 }
 
-XLNT_API std::ostream &operator<<(std::ostream &out_stream, const std::vector<std::uint8_t> &bytes)
+XLNT_API std::ostream &operator<<(std::ostream &out_stream, const std::vector<unsigned char> &bytes)
 {
     to_stream(bytes, out_stream);
     return out_stream;

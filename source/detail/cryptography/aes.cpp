@@ -2679,7 +2679,7 @@ struct rijndael_key
     int Nr;
 };
 
-rijndael_key rijndael_setup(const std::vector<std::uint8_t> &key_data)
+rijndael_key rijndael_setup(const std::vector<unsigned char> &key_data)
 {
     rijndael_key skey;
 
@@ -2820,10 +2820,10 @@ rijndael_key rijndael_setup(const std::vector<std::uint8_t> &key_data)
 #define STORE32H(x, y)                                         \
     do                                                         \
     {                                                          \
-        (y)[0] = static_cast<std::uint8_t>(((x) >> 24) & 255); \
-        (y)[1] = static_cast<std::uint8_t>(((x) >> 16) & 255); \
-        (y)[2] = static_cast<std::uint8_t>(((x) >> 8) & 255);  \
-        (y)[3] = static_cast<std::uint8_t>((x) & 255);         \
+        (y)[0] = static_cast<unsigned char>(((x) >> 24) & 255); \
+        (y)[1] = static_cast<unsigned char>(((x) >> 16) & 255); \
+        (y)[2] = static_cast<unsigned char>(((x) >> 8) & 255);  \
+        (y)[3] = static_cast<unsigned char>((x) & 255);         \
     } while (0)
 
 #define Te0(x) TE0[x]
@@ -2986,9 +2986,9 @@ void rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *pt, rijndael_k
 namespace xlnt {
 namespace detail {
 
-std::vector<std::uint8_t> aes_ecb_encrypt(
-    const std::vector<std::uint8_t> &plaintext,
-    const std::vector<std::uint8_t> &key,
+std::vector<unsigned char> aes_ecb_encrypt(
+    const std::vector<unsigned char> &plaintext,
+    const std::vector<unsigned char> &key,
     const std::size_t offset)
 {
     if (plaintext.empty()) return {};
@@ -3002,7 +3002,7 @@ std::vector<std::uint8_t> aes_ecb_encrypt(
             + " bytes). Must be a multiple of 16 bytes.");
     }
 
-    auto ciphertext = std::vector<std::uint8_t>(len);
+    auto ciphertext = std::vector<unsigned char>(len);
     auto expanded_key = rijndael_setup(key);
     auto pt = std::next(plaintext.data(), offset);
     auto ct = ciphertext.data();
@@ -3019,9 +3019,9 @@ std::vector<std::uint8_t> aes_ecb_encrypt(
     return ciphertext;
 }
 
-std::vector<std::uint8_t> aes_ecb_decrypt(
-    const std::vector<std::uint8_t> &ciphertext,
-    const std::vector<std::uint8_t> &key,
+std::vector<unsigned char> aes_ecb_decrypt(
+    const std::vector<unsigned char> &ciphertext,
+    const std::vector<unsigned char> &key,
     const std::size_t offset)
 {
     if (ciphertext.empty()) return {};
@@ -3035,7 +3035,7 @@ std::vector<std::uint8_t> aes_ecb_decrypt(
             + " bytes). Must be a multiple of 16 bytes.");
     }
 
-    auto plaintext = std::vector<std::uint8_t>(len);
+    auto plaintext = std::vector<unsigned char>(len);
     auto expanded_key = rijndael_setup(key);
     auto ct = std::next(ciphertext.data(), offset);
     auto pt = plaintext.data();
@@ -3052,10 +3052,10 @@ std::vector<std::uint8_t> aes_ecb_decrypt(
     return plaintext;
 }
 
-std::vector<std::uint8_t> aes_cbc_encrypt(
-    const std::vector<std::uint8_t> &plaintext,
-    const std::vector<std::uint8_t> &key,
-    const std::vector<std::uint8_t> &original_iv,
+std::vector<unsigned char> aes_cbc_encrypt(
+    const std::vector<unsigned char> &plaintext,
+    const std::vector<unsigned char> &key,
+    const std::vector<unsigned char> &original_iv,
     const std::size_t offset)
 {
     if (plaintext.empty()) return {};
@@ -3069,7 +3069,7 @@ std::vector<std::uint8_t> aes_cbc_encrypt(
             + " bytes). Must be a multiple of 16 bytes.");
     }
 
-    auto ciphertext = std::vector<std::uint8_t>(len);
+    auto ciphertext = std::vector<unsigned char>(len);
     auto expanded_key = rijndael_setup(key);
     auto ct = ciphertext.data();
     auto pt = std::next(plaintext.data(), offset);
@@ -3098,10 +3098,10 @@ std::vector<std::uint8_t> aes_cbc_encrypt(
     return ciphertext;
 }
 
-std::vector<std::uint8_t> aes_cbc_decrypt(
-    const std::vector<std::uint8_t> &ciphertext,
-    const std::vector<std::uint8_t> &key,
-    const std::vector<std::uint8_t> &original_iv,
+std::vector<unsigned char> aes_cbc_decrypt(
+    const std::vector<unsigned char> &ciphertext,
+    const std::vector<unsigned char> &key,
+    const std::vector<unsigned char> &original_iv,
     const std::size_t offset)
 {
     if (ciphertext.empty()) return {};
@@ -3115,9 +3115,9 @@ std::vector<std::uint8_t> aes_cbc_decrypt(
             + " bytes). Must be a multiple of 16 bytes.");
     }
 
-    std::array<std::uint8_t, 16> temporary{{0}};
+    std::array<unsigned char, 16> temporary{{0}};
 
-    auto plaintext = std::vector<std::uint8_t>(len);
+    auto plaintext = std::vector<unsigned char>(len);
     auto expanded_key = rijndael_setup(key);
     auto ct = std::next(ciphertext.data(), offset);
     auto pt = plaintext.data();
@@ -3130,7 +3130,7 @@ std::vector<std::uint8_t> aes_cbc_decrypt(
 
         for (auto x = std::size_t(0); x < 16; x++)
         {
-            auto tmpy = static_cast<std::uint8_t>(temporary[x] ^ iv[x]);
+            auto tmpy = static_cast<unsigned char>(temporary[x] ^ iv[x]);
             iv[x] = ct[x];
             pt[x] = tmpy;
         }

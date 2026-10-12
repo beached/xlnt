@@ -131,8 +131,8 @@ struct workbook_impl
 
     manifest manifest_;
     optional<theme> theme_;
-    std::unordered_map<std::string, std::vector<std::uint8_t>> images_;
-    std::unordered_map<std::string, std::vector<std::uint8_t>> binaries_;
+    std::unordered_map<std::string, std::vector<unsigned char>> images_;
+    std::unordered_map<std::string, std::vector<unsigned char>> binaries_;
 
     std::vector<std::pair<xlnt::core_property, variant>> core_properties_;
     std::vector<std::pair<xlnt::extended_property, variant>> extended_properties_;

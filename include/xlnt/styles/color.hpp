@@ -105,7 +105,7 @@ public:
     /// Constructs an RGB color from red, green, and blue values in the range 0 to 255
     /// plus an optional alpha which defaults to fully opaque.
     /// </summary>
-    rgb_color(std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a = 255);
+    rgb_color(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
 
     /// <summary>
     /// Returns a string representation of this color in the form \#aarrggbb
@@ -115,38 +115,38 @@ public:
     /// <summary>
     /// Returns a byte representing the red component of this color
     /// </summary>
-    std::uint8_t red() const;
+    unsigned char red() const;
 
     /// <summary>
     /// Returns a byte representing the red component of this color
     /// </summary>
-    std::uint8_t green() const;
+    unsigned char green() const;
 
     /// <summary>
     /// Returns a byte representing the blue component of this color
     /// </summary>
-    std::uint8_t blue() const;
+    unsigned char blue() const;
 
     /// <summary>
     /// Returns a byte representing the alpha component of this color
     /// </summary>
-    std::uint8_t alpha() const;
+    unsigned char alpha() const;
 
     /// <summary>
     /// Returns the red, green, and blue components of this color separately in an array in that order.
     /// </summary>
-    std::array<std::uint8_t, 3> rgb() const;
+    std::array<unsigned char, 3> rgb() const;
 
     /// <summary>
     /// Returns the red, green, blue, and alpha components of this color separately in an array in that order.
     /// </summary>
-    std::array<std::uint8_t, 4> rgba() const;
+    std::array<unsigned char, 4> rgba() const;
 
 private:
     /// <summary>
     /// The four bytes of this color
     /// </summary>
-    std::array<std::uint8_t, 4> rgba_;
+    std::array<unsigned char, 4> rgba_;
 };
 
 /// <summary>

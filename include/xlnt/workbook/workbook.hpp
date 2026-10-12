@@ -24,18 +24,19 @@
 
 #pragma once
 
+#include <xlnt/xlnt_config.hpp>
+#include <xlnt/cell/rich_text.hpp>
+
 #include <cstdint>
 #include <functional>
 #include <iterator>
 #include <map>
 #include <memory>
+#include <span>
 #include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
-
-#include <xlnt/xlnt_config.hpp>
-#include <xlnt/cell/rich_text.hpp>
 
 namespace xlnt {
 
@@ -467,13 +468,13 @@ public:
     /// Serializes the workbook into an XLSX file and saves the bytes into
     /// byte vector data.
     /// </summary>
-    void save(std::vector<std::uint8_t> &data) const;
+    void save(std::vector<unsigned char> &data) const;
 
     /// <summary>
     /// Serializes the workbook into an XLSX file encrypted with the given password
     /// and saves the bytes into byte vector data.
     /// </summary>
-    void save(std::vector<std::uint8_t> &data, const std::string &password) const;
+    void save(std::vector<unsigned char> &data, const std::string &password) const;
 
     /// <summary>
     /// Serializes the workbook into an XLSX file and saves the data into a file
@@ -528,13 +529,13 @@ public:
     /// Interprets byte vector data as an XLSX file and sets the content of this
     /// workbook to match that file.
     /// </summary>
-    void load(const std::vector<std::uint8_t> &data);
+    void load(const std::vector<unsigned char> &data);
 
     /// <summary>
     /// Interprets byte vector data as an XLSX file encrypted with the
     /// given password and sets the content of this workbook to match that file.
     /// </summary>
-    void load(const std::vector<std::uint8_t> &data, const std::string &password);
+    void load(const std::vector<unsigned char> &data, const std::string &password);
 
     /// <summary>
     /// Interprets file with the given filename as an XLSX file and sets
@@ -791,18 +792,18 @@ public:
     /// Sets the workbook's thumbnail to the given vector of bytes, thumbnail,
     /// with the given extension (e.g. jpg) and content_type (e.g. image/jpeg).
     /// </summary>
-    void thumbnail(const std::vector<std::uint8_t> &thumbnail,
+    void thumbnail(const std::vector<unsigned char> &thumbnail,
         const std::string &extension, const std::string &content_type);
 
     /// <summary>
     /// Returns a vector of bytes representing the workbook's thumbnail.
     /// </summary>
-    const std::vector<std::uint8_t> &thumbnail() const;
+    const std::vector<unsigned char> &thumbnail() const;
 
     /// <summary>
     /// Returns stored binary data.
     /// </summary>
-    const std::unordered_map<std::string, std::vector<std::uint8_t>>& binaries() const;
+    const std::unordered_map<std::string, std::vector<unsigned char>> &binaries() const;
 
     // Calculation properties
 
@@ -849,7 +850,7 @@ public:
     /// Return true if this workbook internal implementation doesn't point to the same
     /// memory as rhs's.
     /// </summary>
-    bool operator!=(const workbook &rhs) const;
+    bool operator!=(const workbook &rhs) const = default;
 
 private:
     friend class streaming_workbook_reader;

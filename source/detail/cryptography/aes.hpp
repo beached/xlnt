@@ -29,26 +29,26 @@
 namespace xlnt {
 namespace detail {
 
-std::vector<std::uint8_t> aes_ecb_encrypt(
-    const std::vector<std::uint8_t> &input,
-    const std::vector<std::uint8_t> &key,
+std::vector<unsigned char> aes_ecb_encrypt(
+    const std::vector<unsigned char> &input,
+    const std::vector<unsigned char> &key,
     const std::size_t offset = 0);
 
-std::vector<std::uint8_t> aes_ecb_decrypt(
-    const std::vector<std::uint8_t> &input,
-    const std::vector<std::uint8_t> &key,
+std::vector<unsigned char> aes_ecb_decrypt(
+    const std::vector<unsigned char> &input,
+    const std::vector<unsigned char> &key,
     const std::size_t offset = 0);
 
-std::vector<std::uint8_t> aes_cbc_encrypt(
-    const std::vector<std::uint8_t> &input,
-    const std::vector<std::uint8_t> &key,
-    const std::vector<std::uint8_t> &iv,
+std::vector<unsigned char> aes_cbc_encrypt(
+    const std::vector<unsigned char> &input,
+    const std::vector<unsigned char> &key,
+    const std::vector<unsigned char> &iv,
     const std::size_t offset = 0);
 
-std::vector<std::uint8_t> aes_cbc_decrypt(
-    const std::vector<std::uint8_t> &input,
-    const std::vector<std::uint8_t> &key,
-    const std::vector<std::uint8_t> &iv,
+std::vector<unsigned char> aes_cbc_decrypt(
+    const std::vector<unsigned char> &input,
+    const std::vector<unsigned char> &key,
+    const std::vector<unsigned char> &iv,
     const std::size_t offset = 0);
 
 } // namespace detail

@@ -29,8 +29,8 @@
 namespace xlnt {
 namespace detail {
 
-void sha1(const std::vector<std::uint8_t> &input, std::vector<std::uint8_t> &output);
-void sha512(const std::vector<std::uint8_t> &data, std::vector<std::uint8_t> &output);
+void sha1(const std::vector<unsigned char> &input, std::vector<unsigned char> &output);
+void sha512(const std::vector<unsigned char> &data, std::vector<unsigned char> &output);
 
 }; // namespace detail
 }; // namespace xlnt
