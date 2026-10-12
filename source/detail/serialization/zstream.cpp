@@ -42,9 +42,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 #include <iomanip>
 #include <iostream>
 #include <iterator> // for std::back_inserter
+#include <miniz.h>
 #include <stdexcept>
 #include <string>
-#include <miniz.h>
 
 #include <xlnt/utils/exceptions.hpp>
 #include <detail/serialization/vector_streambuf.hpp>
@@ -253,7 +253,7 @@ public:
         if (compressed_data)
         {
             strm.avail_out = buffer_size - 4;
-            strm.next_out = reinterpret_cast<Bytef *>(out.data() + 4);
+            strm.next_out = reinterpret_cast<Bytef *>(std::next(out.data(), 4));
 
             while (strm.avail_out != 0)
             {
@@ -283,7 +283,7 @@ public:
         }
 
         // uncompressed, so just read
-        istream.read(out.data() + 4,
+        istream.read(std::next(out.data(), 4),
             static_cast<std::streamsize>(std::min(buffer_size - 4, header.uncompressed_size - total_read)));
         auto count = istream.gcount();
         total_read += static_cast<std::size_t>(count);
@@ -297,9 +297,9 @@ public:
         auto put_back_count = gptr() - eback();
         if (put_back_count > 4) put_back_count = 4;
         std::memmove(
-            out.data() + (4 - put_back_count), gptr() - put_back_count, static_cast<std::size_t>(put_back_count));
+            std::next(out.data(), (4 - put_back_count)), gptr() - put_back_count, static_cast<std::size_t>(put_back_count));
         int num = process();
-        setg(out.data() + 4 - put_back_count, out.data() + 4, out.data() + 4 + num);
+        setg(std::next(out.data(), 4 - put_back_count), std::next(out.data(), 4), std::next(out.data(), 4 + num));
         if (num <= 0) return EOF;
         return traits_type::to_int_type(*gptr());
     }
@@ -347,7 +347,7 @@ public:
         }
 
         setg(nullptr, nullptr, nullptr);
-        setp(in.data(), in.data() + buffer_size - 4); // we want to be 4 aligned
+        setp(in.data(), std::next(in.data(), buffer_size - 4)); // we want to be 4 aligned
 
         // Write appropriate header
         if (header)

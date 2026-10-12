@@ -84,7 +84,6 @@ struct number_converter
     double result;
 };
 
-
 // to resolve the locale issue with strtod, a little preprocessing of the input is required
 struct number_converter_mk2
 {
@@ -192,7 +191,7 @@ BENCHMARK_F(RandFloatStrs, double_from_string_std_from_chars)
         const std::string &input = get_rand();
         double output;
         benchmark::DoNotOptimize(
-            std::from_chars(input.data(), input.data() + input.size(), output));
+            std::from_chars(input.data(), std::next(input.data(), input.size()), output));
     }
 }
 

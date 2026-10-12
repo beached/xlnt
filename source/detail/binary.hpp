@@ -35,7 +35,7 @@ namespace detail {
 
 using byte = std::uint8_t;
 
-template<typename T>
+template <typename T>
 class binary_reader
 {
 public:
@@ -90,28 +90,28 @@ public:
         offset_ = 0;
     }
 
-    template<typename U>
+    template <typename U>
     U read()
     {
         return read_reference<U>();
     }
 
-    template<typename U>
+    template <typename U>
     const U *read_pointer()
     {
-        const auto result = reinterpret_cast<const U *>(data() + offset_);
+        const auto result = reinterpret_cast<const U *>(std::next(data(), offset_));
         offset_ += sizeof(U) / sizeof(T);
 
         return result;
     }
 
-    template<typename U>
+    template <typename U>
     const U &read_reference()
     {
         return *read_pointer<U>();
     }
 
-    template<typename U>
+    template <typename U>
     std::vector<U> as_vector() const
     {
         auto result = std::vector<T>(bytes() / sizeof(U), U());
@@ -120,11 +120,11 @@ public:
         return result;
     }
 
-    template<typename U>
+    template <typename U>
     std::vector<U> read_vector(std::size_t count)
     {
         auto result = std::vector<U>(count, U());
-        std::memcpy(result.data(), data() + offset_, count * sizeof(U));
+        std::memcpy(result.data(), std::next(data(), offset_), count * sizeof(U));
         offset_ += count * sizeof(T) / sizeof(U);
 
         return result;
@@ -147,7 +147,7 @@ private:
     const std::size_t size_;
 };
 
-template<typename T>
+template <typename T>
 class binary_writer
 {
 public:
@@ -177,10 +177,10 @@ public:
     {
         return *data_;
     }
-    
+
     // Make the bytes of the data pointed to by this writer equivalent to those in the given vector
     // sizeof(U) should be a multiple of sizeof(T)
-    template<typename U>
+    template <typename U>
     void assign(const std::vector<U> &ints)
     {
         resize(ints.size() * sizeof(U));
@@ -189,7 +189,7 @@ public:
 
     // Make the bytes of the data pointed to by this writer equivalent to those in the given string
     // sizeof(U) should be a multiple of sizeof(T)
-    template<typename U>
+    template <typename U>
     void assign(const std::basic_string<U> &string)
     {
         resize(string.size() * sizeof(U));
@@ -212,7 +212,7 @@ public:
         data_->clear();
     }
 
-    template<typename U>
+    template <typename U>
     void write(U value)
     {
         const auto num_bytes = sizeof(U);
@@ -223,7 +223,7 @@ public:
             extend((num_bytes - remaining_bytes) / sizeof(T));
         }
 
-        std::memcpy(data_->data() + offset(), &value, num_bytes);
+        std::memcpy(std::next(data_->data(), offset()), &value, num_bytes);
         offset_ += num_bytes / sizeof(T);
     }
 
@@ -252,14 +252,14 @@ public:
         return data_->begin() + static_cast<std::ptrdiff_t>(offset());
     }
 
-    template<typename U>
+    template <typename U>
     void append(const std::vector<U> &data)
     {
         binary_reader<U> reader(data);
         append(reader, data.size() * sizeof(U));
     }
 
-    template<typename U>
+    template <typename U>
     void append(binary_reader<U> &reader, std::size_t reader_element_count)
     {
         const auto num_bytes = sizeof(U) * reader_element_count;
@@ -275,7 +275,7 @@ public:
             throw xlnt::exception("reading past end");
         }
 
-        std::memcpy(data_->data() + offset_, reader.data() + reader.offset(), reader_element_count * sizeof(U));
+        std::memcpy(std::next(data_->data(), offset_), std::next(reader.data(), reader.offset()), reader_element_count * sizeof(U));
         offset_ += reader_element_count * sizeof(U) / sizeof(T);
     }
 
@@ -284,17 +284,17 @@ private:
     std::size_t offset_ = 0;
 };
 
-template<typename T>
+template <typename T>
 std::vector<byte> string_to_bytes(const std::basic_string<T> &string)
 {
     std::vector<byte> bytes;
     binary_writer<byte> writer(bytes);
     writer.assign(string);
-    
+
     return bytes;
 }
 
-template<typename T>
+template <typename T>
 T read(std::istream &in)
 {
     T result;
@@ -303,7 +303,7 @@ T read(std::istream &in)
     return result;
 }
 
-template<typename T>
+template <typename T>
 std::vector<T> read_vector(std::istream &in, std::size_t count)
 {
     std::vector<T> result(count, T());
@@ -313,7 +313,7 @@ std::vector<T> read_vector(std::istream &in, std::size_t count)
     return result;
 }
 
-template<typename T>
+template <typename T>
 std::basic_string<T> read_string(std::istream &in, std::size_t count)
 {
     std::basic_string<T> result(count, T());

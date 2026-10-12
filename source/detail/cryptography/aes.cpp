@@ -27,8 +27,8 @@
 
 #include <algorithm>
 #include <array>
-#include <cstdint>
 #include <assert.h>
+#include <cstdint>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -2638,9 +2638,16 @@ static const std::uint32_t Tks3[] = {
     0x79b492a7UL, 0x70b999a9UL, 0x6bae84bbUL, 0x62a38fb5UL, 0x5d80be9fUL, 0x548db591UL, 0x4f9aa883UL, 0x4697a38dUL};
 
 static const std::uint32_t rcon[] = {
-    0x01000000UL, 0x02000000UL, 0x04000000UL, 0x08000000UL,
-    0x10000000UL, 0x20000000UL, 0x40000000UL, 0x80000000UL,
-    0x1B000000UL, 0x36000000UL, /* for 128-bit blocks, Rijndael never uses more than 10 rcon values */
+    0x01000000UL,
+    0x02000000UL,
+    0x04000000UL,
+    0x08000000UL,
+    0x10000000UL,
+    0x20000000UL,
+    0x40000000UL,
+    0x80000000UL,
+    0x1B000000UL,
+    0x36000000UL, /* for 128-bit blocks, Rijndael never uses more than 10 rcon values */
 };
 
 /* extract a byte portably */
@@ -2664,7 +2671,7 @@ static std::uint32_t setup_mix(std::uint32_t temp)
         x = (static_cast<std::uint32_t>((y)[0] & 255) << 24) | (static_cast<std::uint32_t>((y)[1] & 255) << 16) | (static_cast<std::uint32_t>((y)[2] & 255) << 8) | (static_cast<std::uint32_t>((y)[3] & 255)); \
     } while (0)
 
-#define RORc(x, y) ((((static_cast<std::uint32_t>(x) & 0xFFFFFFFFUL) >> static_cast<std::uint32_t>((y)&31)) | (static_cast<std::uint32_t>(x) << static_cast<std::uint32_t>((32 - ((y)&31)) & 31))) & 0xFFFFFFFFUL)
+#define RORc(x, y) ((((static_cast<std::uint32_t>(x) & 0xFFFFFFFFUL) >> static_cast<std::uint32_t>((y) & 31)) | (static_cast<std::uint32_t>(x) << static_cast<std::uint32_t>((32 - ((y) & 31)) & 31))) & 0xFFFFFFFFUL)
 
 struct rijndael_key
 {
@@ -2816,7 +2823,7 @@ rijndael_key rijndael_setup(const std::vector<std::uint8_t> &key_data)
         (y)[0] = static_cast<std::uint8_t>(((x) >> 24) & 255); \
         (y)[1] = static_cast<std::uint8_t>(((x) >> 16) & 255); \
         (y)[2] = static_cast<std::uint8_t>(((x) >> 8) & 255);  \
-        (y)[3] = static_cast<std::uint8_t>((x)&255);           \
+        (y)[3] = static_cast<std::uint8_t>((x) & 255);         \
     } while (0)
 
 #define Te0(x) TE0[x]
@@ -2997,7 +3004,7 @@ std::vector<std::uint8_t> aes_ecb_encrypt(
 
     auto ciphertext = std::vector<std::uint8_t>(len);
     auto expanded_key = rijndael_setup(key);
-    auto pt = plaintext.data() + offset;
+    auto pt = std::next(plaintext.data(), offset);
     auto ct = ciphertext.data();
 
     while (len)
@@ -3030,7 +3037,7 @@ std::vector<std::uint8_t> aes_ecb_decrypt(
 
     auto plaintext = std::vector<std::uint8_t>(len);
     auto expanded_key = rijndael_setup(key);
-    auto ct = ciphertext.data() + offset;
+    auto ct = std::next(ciphertext.data(), offset);
     auto pt = plaintext.data();
 
     while (len)
@@ -3065,7 +3072,7 @@ std::vector<std::uint8_t> aes_cbc_encrypt(
     auto ciphertext = std::vector<std::uint8_t>(len);
     auto expanded_key = rijndael_setup(key);
     auto ct = ciphertext.data();
-    auto pt = plaintext.data() + offset;
+    auto pt = std::next(plaintext.data(), offset);
     auto iv_vec = original_iv;
     auto iv = iv_vec.data();
 
@@ -3112,7 +3119,7 @@ std::vector<std::uint8_t> aes_cbc_decrypt(
 
     auto plaintext = std::vector<std::uint8_t>(len);
     auto expanded_key = rijndael_setup(key);
-    auto ct = ciphertext.data() + offset;
+    auto ct = std::next(ciphertext.data(), offset);
     auto pt = plaintext.data();
     auto iv_vec = original_iv;
     auto iv = iv_vec.data();

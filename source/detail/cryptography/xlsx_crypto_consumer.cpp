@@ -84,7 +84,7 @@ std::vector<std::uint8_t> decrypt_xlsx_agile(
     auto salt_with_block_key = info.agile.key_data.salt_value;
     salt_with_block_key.resize(salt_size + sizeof(std::uint32_t), 0);
 
-    auto &segment = *reinterpret_cast<std::uint32_t *>(salt_with_block_key.data() + salt_size);
+    auto &segment = *reinterpret_cast<std::uint32_t *>(std::next(salt_with_block_key.data(), salt_size));
     auto total_size = read<std::uint64_t>(encrypted_package_stream);
 
     std::vector<std::uint8_t> encrypted_segment(4096, 0);

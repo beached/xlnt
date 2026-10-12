@@ -344,7 +344,7 @@ public:
         xlnt::workbook wb;
         const auto path = path_helper::test_file("6_encrypted_libre.xlsx");
         xlnt_assert_throws(wb.load(path, "incorrect"), xlnt::exception);
-        xlnt_assert_throws_nothing(wb.load(path, u8"\u043F\u0430\u0440\u043E\u043B\u044C")); // u8"пароль"
+        xlnt_assert_throws_nothing(wb.load(path, "\u043F\u0430\u0440\u043E\u043B\u044C")); // "пароль" (UTF-8 encoded)
     }
 
     void test_decrypt_standard()
@@ -371,16 +371,16 @@ public:
         // L"/9_unicode_\u039B_\U0001F607.xlsx" gives the correct output
         const auto path = LSTRING_LITERAL(XLNT_TEST_DATA_DIR) L"/9_unicode_\u039B_\U0001F607.xlsx"; // L"/9_unicode_Λ_😇.xlsx"
         wb.load(path);
-        xlnt_assert_equals(wb.active_sheet().cell("A1").value<std::string>(), u8"un\u00EFc\u00F4d\u0117!"); // u8"unïcôdė!"
+        xlnt_assert_equals(wb.active_sheet().cell("A1").value<std::string>(), "un\u00EFc\u00F4d\u0117!"); // "unïcôdė!" (UTF-8 encoded)
 #endif
 
 #ifndef __MINGW32__
         xlnt::workbook wb2;
-        // u8"/9_unicode_Λ_😇.xlsx" doesn't use 0xC3AA for the capital lambda...
-        // u8"/9_unicode_\u039B_\U0001F607.xlsx" gives the correct output
-        const auto path2 = U8STRING_LITERAL(XLNT_TEST_DATA_DIR) u8"/9_unicode_\u039B_\U0001F607.xlsx"; // u8"/9_unicode_Λ_😇.xlsx"
+        // "/9_unicode_Λ_😇.xlsx" doesn't use 0xC3AA for the capital lambda...
+        // "/9_unicode_\u039B_\U0001F607.xlsx" gives the correct output
+        const auto path2 = U8STRING_LITERAL(XLNT_TEST_DATA_DIR) "/9_unicode_\u039B_\U0001F607.xlsx"; // "/9_unicode_Λ_😇.xlsx" (UTF-8 encoded)
         wb2.load(path2);
-        xlnt_assert_equals(wb2.active_sheet().cell("A1").value<std::string>(), u8"un\u00EFc\u00F4d\u0117!"); // u8"unïcôdė!"
+        xlnt_assert_equals(wb2.active_sheet().cell("A1").value<std::string>(), "un\u00EFc\u00F4d\u0117!"); // "unïcôdė!" (UTF-8 encoded)
 #endif
     }
 
@@ -634,9 +634,9 @@ public:
 
     void test_round_trip_rw_unicode()
     {
-        // u8"/9_unicode_Λ_😇.xlsx" doesn't use 0xC3AA for the capital lambda...
-        // u8"/9_unicode_\u039B_\U0001F607.xlsx" gives the correct output
-        xlnt_assert(round_trip_matches_rw(path_helper::test_file(u8"9_unicode_\u039B_\U0001F607.xlsx")));
+        // "/9_unicode_Λ_😇.xlsx" doesn't use 0xC3AA for the capital lambda...
+        // "/9_unicode_\u039B_\U0001F607.xlsx" gives the correct output
+        xlnt_assert(round_trip_matches_rw(path_helper::test_file("9_unicode_\u039B_\U0001F607.xlsx"))); // "9_unicode_\u039B_\uD83D\uDE07.xlsx" (UTF-8 encoded)
     }
 
     void test_round_trip_rw_comments_hyperlinks_formulae()
@@ -666,7 +666,7 @@ public:
 
     void test_round_trip_rw_encrypted_libre()
     {
-        xlnt_assert(round_trip_matches_rw(path_helper::test_file("6_encrypted_libre.xlsx"), u8"\u043F\u0430\u0440\u043E\u043B\u044C")); // u8"пароль"
+        xlnt_assert(round_trip_matches_rw(path_helper::test_file("6_encrypted_libre.xlsx"), "\u043F\u0430\u0440\u043E\u043B\u044C")); // "пароль" (UTF-8 encoded)
     }
 
     void test_round_trip_rw_encrypted_standard()

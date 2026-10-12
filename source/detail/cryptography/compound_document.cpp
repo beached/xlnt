@@ -86,7 +86,7 @@ std::string join_path(const std::vector<std::string> &path)
 const sector_id FreeSector = -1;
 const sector_id EndOfChain = -2;
 const sector_id SATSector = -3;
-//const sector_id MSATSector = -4;
+// const sector_id MSATSector = -4;
 
 const directory_id End = -1;
 
@@ -300,7 +300,7 @@ public:
           position_(0)
     {
         setp(reinterpret_cast<char *>(current_sector_.data()),
-            reinterpret_cast<char *>(current_sector_.data() + current_sector_.size()));
+            reinterpret_cast<char *>(std::next(current_sector_.data(), current_sector_.size())));
     }
 
     compound_document_ostreambuf(const compound_document_ostreambuf &) = delete;
@@ -354,7 +354,7 @@ private:
 
         std::fill(current_sector_.begin(), current_sector_.end(), byte(0));
         setp(reinterpret_cast<char *>(current_sector_.data()),
-            reinterpret_cast<char *>(current_sector_.data() + current_sector_.size()));
+            reinterpret_cast<char *>(std::next(current_sector_.data(), current_sector_.size())));
 
         return 0;
     }
@@ -571,7 +571,7 @@ template <typename T>
 void compound_document::write_sector(binary_reader<T> &reader, sector_id id)
 {
     out_->seekp(static_cast<std::ptrdiff_t>(sector_data_start() + sector_size() * static_cast<std::size_t>(id)));
-    out_->write(reinterpret_cast<const char *>(reader.data() + reader.offset()),
+    out_->write(reinterpret_cast<const char *>(std::next(reader.data(), reader.offset())),
         static_cast<std::ptrdiff_t>(std::min(sector_size(), reader.bytes() - reader.offset())));
 }
 
@@ -582,7 +582,7 @@ void compound_document::write_short_sector(binary_reader<T> &reader, sector_id i
     auto sector_id = chain[static_cast<std::size_t>(id) / (sector_size() / short_sector_size())];
     auto sector_offset = static_cast<std::size_t>(id) % (sector_size() / short_sector_size()) * short_sector_size();
     out_->seekp(static_cast<std::ptrdiff_t>(sector_data_start() + sector_size() * static_cast<std::size_t>(sector_id) + sector_offset));
-    out_->write(reinterpret_cast<const char *>(reader.data() + reader.offset()),
+    out_->write(reinterpret_cast<const char *>(std::next(reader.data(), reader.offset())),
         static_cast<std::ptrdiff_t>(std::min(short_sector_size(), reader.bytes() - reader.offset())));
 }
 
@@ -1174,7 +1174,7 @@ void compound_document::tree_insert_fixup(directory_id x)
 
             if (y >= 0 && tree_color(y) == entry_color::Red)
             {
-                //case 1
+                // case 1
                 tree_color(tree_parent(x)) = entry_color::Black;
                 tree_color(y) = entry_color::Black;
                 tree_color(tree_parent(tree_parent(x))) = entry_color::Red;

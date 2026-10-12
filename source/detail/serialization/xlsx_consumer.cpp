@@ -181,7 +181,7 @@ xlnt::detail::Cell parse_cell(xlnt::row_t row_arg, xml::parser *parser)
         }
         else if (string_equal(attr.first.name(), "s"))
         {
-            c.style_index = static_cast<int>(strtol(attr.second.value.c_str(), nullptr, 10));
+            c.style_index = static_cast<int>(xlnt::detail::parse_integer<long>(attr.second.value));
         }
         else if (string_equal(attr.first.name(), "ph"))
         {
@@ -189,14 +189,14 @@ xlnt::detail::Cell parse_cell(xlnt::row_t row_arg, xml::parser *parser)
         }
         else if (string_equal(attr.first.name(), "cm"))
         {
-            c.cell_metatdata_idx = static_cast<int>(strtol(attr.second.value.c_str(), nullptr, 10));
+            c.cell_metatdata_idx = static_cast<int>(xlnt::detail::parse_integer<long>(attr.second.value));
         }
     }
     int level = 1; // nesting level
-        // 1 == <c>
-        // 2 == <v>/<f>
-        // 3 == <is><t>
-        // exit loop at </c>
+                   // 1 == <c>
+                   // 2 == <v>/<f>
+                   // 3 == <is><t>
+                   // exit loop at </c>
     while (level > 0)
     {
         xml::parser::event_type e = parser->next();
@@ -271,7 +271,7 @@ std::pair<xlnt::row_properties, int> parse_row(xml::parser *parser, xlnt::detail
         }
         else if (string_equal(attr.first.name(), "s"))
         {
-            props.first.style = strtoul(attr.second.value.c_str(), nullptr, 10);
+            props.first.style = xlnt::detail::parse_integer<unsigned long>(attr.second.value);
         }
         else if (string_equal(attr.first.name(), "hidden"))
         {
@@ -287,7 +287,7 @@ std::pair<xlnt::row_properties, int> parse_row(xml::parser *parser, xlnt::detail
         }
         else if (string_equal(attr.first.name(), "r"))
         {
-            props.second = static_cast<int>(strtol(attr.second.value.c_str(), nullptr, 10));
+            props.second = static_cast<int>(xlnt::detail::parse_integer<long>(attr.second.value));
         }
         else if (string_equal(attr.first.name(), "customHeight"))
         {
@@ -331,8 +331,8 @@ Sheet_Data parse_sheet_data(xml::parser *parser, xlnt::detail::number_serialiser
 {
     Sheet_Data sheet_data;
     int level = 1; // nesting level
-        // 1 == <sheetData>
-        // 2 == <row>
+                   // 1 == <sheetData>
+                   // 2 == <row>
 
     while (level > 0)
     {
@@ -785,7 +785,7 @@ void xlsx_consumer::read_worksheet_sheetdata()
                 break;
             }
             case cell::type::shared_string: {
-                ws_cell_impl->value_numeric_ = static_cast<double>(strtol(cell.value.c_str(), nullptr, 10));
+                ws_cell_impl->value_numeric_ = static_cast<double>(xlnt::detail::parse_integer<long>(cell.value));
                 break;
             }
             case cell::type::inline_string: {
@@ -1077,7 +1077,8 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
             for (std::size_t i = 0; i < 3; ++i)
             {
                 auto loc = i == 0 ? header_footer::location::left
-                                  : i == 1 ? header_footer::location::center : header_footer::location::right;
+                    : i == 1      ? header_footer::location::center
+                                  : header_footer::location::right;
 
                 if (different_odd_even)
                 {
@@ -1119,8 +1120,8 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
         }
         else if (current_worksheet_element == qn("spreadsheetml", "rowBreaks")) // CT_PageBreak 0-1
         {
-            auto count = parser().attribute_present("count") ? parser().attribute<std::size_t>("count") : 0;
-            auto manual_break_count = parser().attribute_present("manualBreakCount")
+            [[maybe_unused]] auto count = parser().attribute_present("count") ? parser().attribute<std::size_t>("count") : 0;
+            [[maybe_unused]] auto manual_break_count = parser().attribute_present("manualBreakCount")
                 ? parser().attribute<std::size_t>("manualBreakCount")
                 : 0;
 
@@ -1145,8 +1146,8 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
         }
         else if (current_worksheet_element == qn("spreadsheetml", "colBreaks")) // CT_PageBreak 0-1
         {
-            auto count = parser().attribute_present("count") ? parser().attribute<std::size_t>("count") : 0;
-            auto manual_break_count = parser().attribute_present("manualBreakCount")
+            [[maybe_unused]] auto count = parser().attribute_present("count") ? parser().attribute<std::size_t>("count") : 0;
+            [[maybe_unused]] auto manual_break_count = parser().attribute_present("manualBreakCount")
                 ? parser().attribute<std::size_t>("manualBreakCount")
                 : 0;
 
@@ -1273,7 +1274,7 @@ bool xlsx_consumer::has_cell()
     auto ws = worksheet(current_worksheet_);
 
     while (streaming_cell_ // we're not at the end of the file
-           && !in_element(qn("spreadsheetml", "row"))) // we're at the end of a row, or between rows
+        && !in_element(qn("spreadsheetml", "row"))) // we're at the end of a row, or between rows
     {
         if (parser().peek() == xml::parser::event_type::end_element
             && stack_.back() == qn("spreadsheetml", "row"))
@@ -1701,8 +1702,8 @@ void xlsx_consumer::read_content_types()
 
 void xlsx_consumer::read_core_properties()
 {
-    //qn("extended-properties", "Properties");
-    //qn("custom-properties", "Properties");
+    // qn("extended-properties", "Properties");
+    // qn("custom-properties", "Properties");
     expect_start_element(qn("core-properties", "coreProperties"), xml::content::complex);
 
     while (in_element(qn("core-properties", "coreProperties")))

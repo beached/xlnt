@@ -96,7 +96,7 @@ std::string encode_base64(const std::vector<std::uint8_t> &input)
 std::vector<std::uint8_t> decode_base64(const std::string &input)
 {
     std::size_t padding_count = 0;
-    auto in_end = input.data() + input.size();
+    auto in_end = std::next(input.data(), input.size());
 
     while (*--in_end == '=')
     {

@@ -21,7 +21,6 @@
 // @license: http://www.opensource.org/licenses/mit-license.php
 // @author: see AUTHORS file
 
-#include <cstdint>
 #include <xlnt/utils/exceptions.hpp>
 #include <detail/constants.hpp>
 #include <detail/cryptography/aes.hpp>
@@ -35,6 +34,7 @@
 #include <detail/serialization/xlsx_producer.hpp>
 #include <detail/serialization/zstream.hpp>
 #include <detail/unicode.hpp>
+#include <cstdint>
 
 namespace {
 
@@ -221,7 +221,7 @@ void encrypt_xlsx_agile(
     auto salt_size = info.agile.key_data.salt_size;
     auto salt_with_block_key = info.agile.key_data.salt_value;
     salt_with_block_key.resize(salt_size + sizeof(std::uint32_t), 0);
-    auto &segment_index = *reinterpret_cast<std::uint32_t *>(salt_with_block_key.data() + salt_size);
+    auto &segment_index = *reinterpret_cast<std::uint32_t *>(std::next(salt_with_block_key.data(), salt_size));
 
     auto segment = std::vector<std::uint8_t>(4096, 0);
 

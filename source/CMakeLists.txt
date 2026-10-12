@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 4.2.3)
 project(xlnt VERSION 1.5.0)
 
-set(CMAKE_CXX_STANDARD ${XLNT_CXX_LANG})
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
 
 # Project metadata
@@ -16,6 +14,9 @@ set(XLNT_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(XLNT_INCLUDE_DIR ${XLNT_ROOT_DIR}/include)
 set(XLNT_SOURCE_DIR ${XLNT_ROOT_DIR}/source)
 set(THIRD_PARTY_DIR ${XLNT_ROOT_DIR}/third-party)
+
+# Fetch third-party dependencies
+include(${XLNT_ROOT_DIR}/extern/CMakeLists.txt)
 
 # Include libstudxml library
 add_subdirectory(${THIRD_PARTY_DIR}/libstudxml.build
@@ -35,7 +36,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas") # ignore MSVC and Clang pragmas
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-maybe-uninitialized") # GCC diagnostic with lots of false positives
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything") # all warnings
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra") # all warnings
   # blacklist warnings that are not relevant
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat") # ignore warnings about C++98 compatibility
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat-pedantic") # ignore pedantic warnings about C++98 compatibility
@@ -175,8 +176,7 @@ else()
   target_compile_definitions(xlnt PUBLIC XLNT_STATIC=1)
 endif()
 
-# requires cmake 3.8+
-#target_compile_features(xlnt PUBLIC cxx_std_${XLNT_CXX_LANG})
+target_compile_features(xlnt PUBLIC cxx_std_20)
 
 # Includes
 target_include_directories(xlnt

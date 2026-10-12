@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 4.2.3)
 project(xlnt.samples)
 
-# Require C++11 compiler
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 if(NOT COMBINED_PROJECT)
   # Include xlnt library
   add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../source ${CMAKE_CURRENT_BINARY_DIR}/source)
